@@ -27,14 +27,14 @@ namespace cqueue {
     };
 
     template<typename T>
-    class LinkedBlockingQueue : public QueueInterface<T> {
+    class NonBlockingQueue : public QueueInterface<T> {
 
     private:
         std::mutex mutex_;
         std::queue<T> queue_;
 
     public:
-        ~LinkedBlockingQueue()  = default;
+        ~NonBlockingQueue()  = default;
 
         void clear() override {
             std::unique_lock<std::mutex> lock(mutex_);
@@ -65,43 +65,45 @@ namespace cqueue {
 
 /*
  *  The linked atomic queue does not work with struct pointer due to copyable restrictions
-    template<typename T>
-    class LinkedAtomicQueue : public QueueInterface<T> {
+ */
+
+template<typename T>
+class LinkedAtomicQueue : public QueueInterface<T> {
 
     private:
-        template<typename X>
         struct Node {
-            X item;
-            std::atomic<struct Node<X>*> next;
+            T item;
+            std::atomic<Node*> next;
 
             Node() {
                next = nullptr;
             }
 
-            Node(X&& x) {
-                item = x;
+            Node(T&& tData) {
+                item = tData;
                 next = nullptr;
             }
         };
 
-        std::atomic<struct Node<T>*> head_;
-        std::atomic<struct Node<T>*> tail_;
-        const struct Node<T>* firstNode_;
+        std::atomic<Node*> head_p_;
+        std::atomic<Node*> tail_p_;
+        Node* firstNode_p_;
 
     public:
         LinkedAtomicQueue() {
-            firstNode_ = new Node<T>();
+            firstNode_p_ = new Node();
         }
 
         ~LinkedAtomicQueue() {
-            delete firstNode_;
+            delete firstNode_p_;
         }
 
         void clear() override {
-           // struct Node<T>* tail = tail_.exchange(firstNode_);
-            struct Node<T>* tail = std::atomic_exchange(&tail_, firstNode_);
-            struct Node<T>* head = head_.exchange(firstNode_);
-            struct Node<T>* cur = nullptr;
+            Node* tail = tail_p_.load();
+            std::atomic_exchange(&tail_p_, tail);
+           // Node* head = std::atomic_exchange(&head_p_, firstNode_p_);
+            Node* head = head_p_.exchange(firstNode_p_);
+            Node* cur = nullptr;
             while (head != nullptr) {
                 cur = head;
                 head = head->next;
@@ -110,24 +112,24 @@ namespace cqueue {
         }
 
         bool add(T&& t) override {
-            struct Node<T>* tmp = new Node<T>(std::move(t));
-            struct Node<T>* tail = tail_.exchange(tmp);
+            struct Node* tmp = new Node(std::move(t));
+            struct Node* tail = tail_p_.exchange(tmp);
             tail->next.store(tmp);
             return true;
         }
 
         bool poll(T& t) override {
-            struct Node<T>* pHead = head_.exchange(nullptr);
+            struct Node* pHead = head_p_.exchange(nullptr);
             if (pHead == nullptr) {
                 return false;
             }
-            struct Node<T>* cur = pHead->next.exchange(nullptr);
+            struct Node* cur = pHead->next.exchange(nullptr);
             if (cur == nullptr) {
                 return false;
             }
-            head_.store(cur);
+            head_p_.store(cur);
             t = cur->item;
-            if (pHead != firstNode_) {
+            if (pHead != firstNode_p_) {
                 delete pHead;
             }
             return true;
@@ -135,7 +137,7 @@ namespace cqueue {
 
     };
 
- */
+
 
 } // cqueue
 

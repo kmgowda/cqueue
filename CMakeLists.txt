@@ -2,9 +2,12 @@ cmake_minimum_required(VERSION 3.27)
 project(cqueue CXX)
 
 set(CMAKE_CXX_STANDARD 20)
+list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
-include_directories(.)
+find_package(benchmark REQUIRED)
 
-set( sources cqueue.cpp)
+set( sources main.cpp queuebenchmark.cpp)
 
 add_executable(cqueue ${sources})
+
+target_link_libraries(cqueue benchmark::benchmark)

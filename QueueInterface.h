@@ -59,10 +59,6 @@ namespace cqueue {
     };
 
 
-
-
-
-
 /*
  *  The linked atomic queue does not work with struct pointer due to copyable restrictions
  */
@@ -92,6 +88,8 @@ class LinkedAtomicQueue : public QueueInterface<T> {
     public:
         LinkedAtomicQueue() {
             firstNode_p_ = new Node();
+            tail_p_.store(firstNode_p_);
+            head_p_.store(firstNode_p_);
         }
 
         ~LinkedAtomicQueue() {
@@ -99,10 +97,8 @@ class LinkedAtomicQueue : public QueueInterface<T> {
         }
 
         void clear() override {
-            Node* tail = tail_p_.load();
-            std::atomic_exchange(&tail_p_, tail);
-           // Node* head = std::atomic_exchange(&head_p_, firstNode_p_);
             Node* head = head_p_.exchange(firstNode_p_);
+            tail_p_.store(firstNode_p_);
             Node* cur = nullptr;
             while (head != nullptr) {
                 cur = head;
@@ -112,26 +108,26 @@ class LinkedAtomicQueue : public QueueInterface<T> {
         }
 
         bool add(T&& t) override {
-            struct Node* tmp = new Node(std::move(t));
-            struct Node* tail = tail_p_.exchange(tmp);
+            Node* tmp = new Node(std::move(t));
+            Node* tail = tail_p_.exchange(tmp);
             tail->next.store(tmp);
             return true;
         }
 
         bool poll(T& t) override {
-            struct Node* pHead = head_p_.exchange(nullptr);
-            if (pHead == nullptr) {
+            Node* pHead = head_p_.load();
+            Node* nxt = pHead->next.load();
+            while(nxt != nullptr && !head_p_.compare_exchange_weak(pHead, nxt))  {
+                pHead = head_p_.load();
+                nxt = pHead->next.load();
+            }
+            if(nxt == nullptr) {
                 return false;
             }
-            struct Node* cur = pHead->next.exchange(nullptr);
-            if (cur == nullptr) {
-                return false;
-            }
-            head_p_.store(cur);
-            t = cur->item;
-            if (pHead != firstNode_p_) {
+            if(pHead != firstNode_p_) {
                 delete pHead;
             }
+            t = std::move(nxt->item);
             return true;
         }
 

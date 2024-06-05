@@ -76,7 +76,7 @@ BENCHMARK_DEFINE_F(QueueBenchmark, LinkedAtomicQueueMany)(benchmark::State& stat
 }
 
 
-BENCHMARK_REGISTER_F(QueueBenchmark, NonBlockingQueue)->Unit(benchmark::kNanosecond)->Range(10000, 100000);
-BENCHMARK_REGISTER_F(QueueBenchmark, NonBlockingQueueMany)->Unit(benchmark::kNanosecond)->ThreadRange(1, 1024)->Iterations(10000);
 BENCHMARK_REGISTER_F(QueueBenchmark, LinkedAtomicQueue)->Unit(benchmark::kNanosecond)->Range(10000, 100000);
 BENCHMARK_REGISTER_F(QueueBenchmark, LinkedAtomicQueueMany)->Unit(benchmark::kNanosecond)->ThreadRange(1, 1024)->Iterations(10000);
+BENCHMARK_REGISTER_F(QueueBenchmark, NonBlockingQueue)->Unit(benchmark::kNanosecond)->Range(10000, 100000);
+BENCHMARK_REGISTER_F(QueueBenchmark, NonBlockingQueueMany)->Unit(benchmark::kNanosecond)->ThreadRange(1, 1024)->Iterations(10000);

@@ -6,7 +6,8 @@ list(APPEND CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/cmake)
 
 find_package(benchmark REQUIRED)
 
-set( sources main.cpp queuebenchmark.cpp)
+set( sources main.cpp queuebenchmark.cpp
+        QueueInterface.h)
 
 add_executable(cqueue ${sources})
 

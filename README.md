@@ -8,8 +8,8 @@ with debug enabled
 
 
 ```
-Users/kmg/projects/cqueue/cmake-build-debug/cqueue
-2024-06-05T22:08:10+05:30
+/Users/kmg/projects/cqueue/cmake-build-debug/cqueue
+2024-06-06T21:04:42+05:30
 Running /Users/kmg/projects/cqueue/cmake-build-debug/cqueue
 Run on (16 X 2300 MHz CPU s)
 CPU Caches:
@@ -17,39 +17,39 @@ CPU Caches:
   L1 Instruction 32 KiB
   L2 Unified 256 KiB (x8)
   L3 Unified 16384 KiB
-Load Average: 36.84, 203.43, 153.56
+Load Average: 3.95, 4.34, 2.99
 ***WARNING*** Library was built as DEBUG. Timings may be affected.
 -------------------------------------------------------------------------------------------------------------
 Benchmark                                                                   Time             CPU   Iterations
 -------------------------------------------------------------------------------------------------------------
-QueueBenchmark/NonBlockingQueue/10000                                     145 ns          144 ns      5295729
-QueueBenchmark/NonBlockingQueue/32768                                     132 ns          132 ns      4832452
-QueueBenchmark/NonBlockingQueue/100000                                    126 ns          126 ns      5683571
-QueueBenchmark/NonBlockingQueueMany/iterations:10000/threads:1           1298 ns         1283 ns        10000
-QueueBenchmark/NonBlockingQueueMany/iterations:10000/threads:2           3597 ns         5763 ns        20000
-QueueBenchmark/NonBlockingQueueMany/iterations:10000/threads:4           3800 ns        12793 ns        40000
-QueueBenchmark/NonBlockingQueueMany/iterations:10000/threads:8           4584 ns        32085 ns        80000
-QueueBenchmark/NonBlockingQueueMany/iterations:10000/threads:16          4789 ns        70775 ns       160000
-QueueBenchmark/NonBlockingQueueMany/iterations:10000/threads:32          4562 ns        72336 ns       320000
-QueueBenchmark/NonBlockingQueueMany/iterations:10000/threads:64          4566 ns        73049 ns       640000
-QueueBenchmark/NonBlockingQueueMany/iterations:10000/threads:128         4457 ns        75400 ns      1280000
-QueueBenchmark/NonBlockingQueueMany/iterations:10000/threads:256         4384 ns        73982 ns      2560000
-QueueBenchmark/NonBlockingQueueMany/iterations:10000/threads:512         4284 ns        74204 ns      5120000
-QueueBenchmark/NonBlockingQueueMany/iterations:10000/threads:1024        5384 ns        87342 ns     10240000
-QueueBenchmark/LinkedAtomicQueue/10000                                    140 ns          140 ns      5060217
-QueueBenchmark/LinkedAtomicQueue/32768                                    140 ns          140 ns      4920049
-QueueBenchmark/LinkedAtomicQueue/100000                                   139 ns          139 ns      5037638
-QueueBenchmark/LinkedAtomicQueueMany/iterations:10000/threads:1          1410 ns         1409 ns        10000
-QueueBenchmark/LinkedAtomicQueueMany/iterations:10000/threads:2          1850 ns         3700 ns        20000
-QueueBenchmark/LinkedAtomicQueueMany/iterations:10000/threads:4          1639 ns         6553 ns        40000
-QueueBenchmark/LinkedAtomicQueueMany/iterations:10000/threads:8          2036 ns        16192 ns        80000
-QueueBenchmark/LinkedAtomicQueueMany/iterations:10000/threads:16         2580 ns        40502 ns       160000
-QueueBenchmark/LinkedAtomicQueueMany/iterations:10000/threads:32         2205 ns        36789 ns       320000
-QueueBenchmark/LinkedAtomicQueueMany/iterations:10000/threads:64         1847 ns        30731 ns       640000
-QueueBenchmark/LinkedAtomicQueueMany/iterations:10000/threads:128        2140 ns        35614 ns      1280000
-QueueBenchmark/LinkedAtomicQueueMany/iterations:10000/threads:256        1903 ns        31494 ns      2560000
-QueueBenchmark/LinkedAtomicQueueMany/iterations:10000/threads:512        1829 ns        30894 ns      5120000
-QueueBenchmark/LinkedAtomicQueueMany/iterations:10000/threads:1024       1970 ns        33375 ns     10240000
+QueueBenchmark/LinkedAtomicQueue/10000                                    124 ns          123 ns      4802184
+QueueBenchmark/LinkedAtomicQueue/32768                                    118 ns          117 ns      5695456
+QueueBenchmark/LinkedAtomicQueue/100000                                   112 ns          111 ns      6506907
+QueueBenchmark/LinkedAtomicQueueMany/iterations:10000/threads:1          1220 ns         1212 ns        10000
+QueueBenchmark/LinkedAtomicQueueMany/iterations:10000/threads:2          1561 ns         3092 ns        20000
+QueueBenchmark/LinkedAtomicQueueMany/iterations:10000/threads:4          1489 ns         5883 ns        40000
+QueueBenchmark/LinkedAtomicQueueMany/iterations:10000/threads:8          1554 ns        12311 ns        80000
+QueueBenchmark/LinkedAtomicQueueMany/iterations:10000/threads:16         1794 ns        27039 ns       160000
+QueueBenchmark/LinkedAtomicQueueMany/iterations:10000/threads:32         1606 ns        25736 ns       320000
+QueueBenchmark/LinkedAtomicQueueMany/iterations:10000/threads:64         1421 ns        22926 ns       640000
+QueueBenchmark/LinkedAtomicQueueMany/iterations:10000/threads:128        1458 ns        23683 ns      1280000
+QueueBenchmark/LinkedAtomicQueueMany/iterations:10000/threads:256        1350 ns        23113 ns      2560000
+QueueBenchmark/LinkedAtomicQueueMany/iterations:10000/threads:512        1292 ns        22926 ns      5120000
+QueueBenchmark/LinkedAtomicQueueMany/iterations:10000/threads:1024       1519 ns        25070 ns     10240000
+QueueBenchmark/NonBlockingQueue/10000                                     159 ns          147 ns      4319041
+QueueBenchmark/NonBlockingQueue/32768                                     146 ns          145 ns      4867567
+QueueBenchmark/NonBlockingQueue/100000                                    141 ns          140 ns      4762747
+QueueBenchmark/NonBlockingQueueMany/iterations:10000/threads:1           1399 ns         1399 ns        10000
+QueueBenchmark/NonBlockingQueueMany/iterations:10000/threads:2           3573 ns         5720 ns        20000
+QueueBenchmark/NonBlockingQueueMany/iterations:10000/threads:4           3968 ns        13309 ns        40000
+QueueBenchmark/NonBlockingQueueMany/iterations:10000/threads:8           4167 ns        29258 ns        80000
+QueueBenchmark/NonBlockingQueueMany/iterations:10000/threads:16          4814 ns        70533 ns       160000
+QueueBenchmark/NonBlockingQueueMany/iterations:10000/threads:32          4959 ns        76744 ns       320000
+QueueBenchmark/NonBlockingQueueMany/iterations:10000/threads:64          4899 ns        76867 ns       640000
+QueueBenchmark/NonBlockingQueueMany/iterations:10000/threads:128         5373 ns        82432 ns      1280000
+QueueBenchmark/NonBlockingQueueMany/iterations:10000/threads:256         5571 ns        87436 ns      2560000
+QueueBenchmark/NonBlockingQueueMany/iterations:10000/threads:512         5285 ns        85366 ns      5120000
+QueueBenchmark/NonBlockingQueueMany/iterations:10000/threads:1024        5341 ns        85061 ns     10240000
 
 Process finished with exit code 0
 

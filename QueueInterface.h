@@ -116,9 +116,6 @@ class LinkedAtomicQueue : public QueueInterface<T> {
 
         bool poll(T& t) override {
             Node* pHead = head_p_.load();
-            if (pHead == nullptr) {
-                return false;
-            }
             Node* nxt = pHead->next.load();
             while(nxt != nullptr && !head_p_.compare_exchange_weak(pHead, nxt))  {
                 pHead = head_p_.load();

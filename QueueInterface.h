@@ -67,7 +67,7 @@ namespace cqueue {
 
     public:
         BoostLockFreeQueue(){
-            queue_p = std::make_shared<boost::lockfree::queue<T>>(1024);
+            queue_p = std::make_shared<boost::lockfree::queue<T>>(0);
         }
         ~BoostLockFreeQueue()  = default;
 

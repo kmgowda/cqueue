@@ -2,11 +2,13 @@
 // Created by kmg on 04/06/24.
 //
 #include <benchmark/benchmark.h>
+#include <boost/lockfree/queue.hpp>
 #include "QueueInterface.h"
 
 using cqueue::QueueInterface;
 using cqueue::NonBlockingQueue;
 using cqueue::LinkedAtomicQueue;
+using cqueue::BoostLockFreeQueue;
 
 class QueueBenchmark: public ::benchmark::Fixture {
 
@@ -14,10 +16,12 @@ class QueueBenchmark: public ::benchmark::Fixture {
 public:
     std::shared_ptr<QueueInterface<int>> nonBlkqueue_p;
     std::shared_ptr<QueueInterface<int>> atomiqueue_p;
+    std::shared_ptr<BoostLockFreeQueue<int>> boostQueue_p;
 
     QueueBenchmark() {
         nonBlkqueue_p = nullptr;
         atomiqueue_p = nullptr;
+        boostQueue_p = nullptr;
     }
 
     ~QueueBenchmark() = default;
@@ -26,6 +30,7 @@ public:
         if (state.thread_index() == 0) {
             nonBlkqueue_p = std::make_shared<NonBlockingQueue<int>>();
             atomiqueue_p =  std::make_shared<LinkedAtomicQueue<int>>();
+            boostQueue_p = std::make_shared<BoostLockFreeQueue<int>>();
         }
     }
 
@@ -75,7 +80,27 @@ BENCHMARK_DEFINE_F(QueueBenchmark, LinkedAtomicQueueMany)(benchmark::State& stat
     }
 }
 
+BENCHMARK_DEFINE_F(QueueBenchmark, BoostLockFreeQueue)(benchmark::State& state) {
+    int tmp = 1;
+    for(auto _ :state) {
+        atomiqueue_p->add(1);
+        atomiqueue_p->poll(tmp);
+    }
+}
 
+BENCHMARK_DEFINE_F(QueueBenchmark, BoostLockFreeQueueMany)(benchmark::State& state) {
+    int tmp = 1;
+    int size = 10;
+    for(auto _ :state) {
+        for(int i=0; i < size; i++)
+            atomiqueue_p->add(i+1);
+        for(int i=0; i < size; i++)
+            atomiqueue_p->poll(tmp);
+    }
+}
+
+BENCHMARK_REGISTER_F(QueueBenchmark, BoostLockFreeQueue)->Unit(benchmark::kNanosecond)->Range(10000, 100000);
+BENCHMARK_REGISTER_F(QueueBenchmark, BoostLockFreeQueueMany)->Unit(benchmark::kNanosecond)->ThreadRange(1, 1024)->Iterations(10000);
 BENCHMARK_REGISTER_F(QueueBenchmark, LinkedAtomicQueue)->Unit(benchmark::kNanosecond)->Range(10000, 100000);
 BENCHMARK_REGISTER_F(QueueBenchmark, LinkedAtomicQueueMany)->Unit(benchmark::kNanosecond)->ThreadRange(1, 1024)->Iterations(10000);
 BENCHMARK_REGISTER_F(QueueBenchmark, NonBlockingQueue)->Unit(benchmark::kNanosecond)->Range(10000, 100000);

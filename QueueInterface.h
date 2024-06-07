@@ -8,6 +8,7 @@
 #include <mutex>
 #include <queue>
 #include <atomic>
+#include <boost/lockfree/queue.hpp>
 
 namespace cqueue {
 
@@ -45,18 +46,48 @@ namespace cqueue {
 
         bool add(T&& t) override {
             std::unique_lock<std::mutex> lock(mutex_);
-            queue_.push(t);
+            queue_.push(std::move(t));
             return true;
         }
 
         bool poll(T& t) override {
             std::unique_lock<std::mutex> lock(mutex_);
-            t = queue_.front();
+            t = std::move(queue_.front());
             queue_.pop();
             return true;
         }
 
     };
+
+    template<typename T>
+    class BoostLockFreeQueue : public QueueInterface<T> {
+
+    private:
+        std::shared_ptr<boost::lockfree::queue<T>> queue_p;
+
+    public:
+        BoostLockFreeQueue(){
+            queue_p = std::make_shared<boost::lockfree::queue<T>>(1024);
+        }
+        ~BoostLockFreeQueue()  = default;
+
+        void clear() override {
+            T t;
+            while (queue_p->empty()) {
+                queue_p->pop(t);
+            }
+        }
+
+        bool add(T&& t) override {
+            return queue_p->push(t);
+        }
+
+        bool poll(T& t) override {
+           return queue_p->pop(t);
+        }
+
+    };
+
 
 
 /*

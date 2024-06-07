@@ -1,5 +1,6 @@
 # Disable the Google Benchmark requirement on Google Test
 set(BENCHMARK_ENABLE_TESTING NO)
+Set(FETCHCONTENT_QUIET FALSE)
 
 include(FetchContent)
 
